@@ -4,15 +4,60 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Sudoku</title>
-  <link href="resources//bootstrap.min.css" rel="stylesheet">
+  <link href="resources/bootstrap.min.css" rel="stylesheet">
+  <link href="resources/main.css" rel="stylesheet">
 </head>
 <body>
   <div class="container text-center mt-4">
     <h1 class="mb-3">Sudoku</h1>
 
-    <div class="sudoku-grid">
-    </div>
+    <div class="sudoku-grid bg-white rounded"></div>
+
   </div>
   <script src="resources/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function(){
+
+      const grid = $('.sudoku-grid');
+
+      for (let r = 0; r < 9; r++) {
+        const row = $('<div class="sudoku-row"></div>');
+        for (let c = 0; c < 9; c++) {
+          const $input = $('<input class="cell form-control" maxlength="1" inputmode="numeric" autocomplete="off">');
+          row.append($input);
+        }
+        grid.append(row);
+      }
+
+      grid.on('input', '.cell', function(){
+        const v = $(this).val();
+        if (!/^[1-9]$/.test(v)) {
+          $(this).val(v.replace(/[^1-9]/g,'').slice(0,1))
+        };
+      });
+
+      grid.on('keydown', '.cell', function(e){
+        const cells = $('.sudoku-grid .cell');
+        const idx = cells.index(this);
+
+        if (e.key === 'ArrowRight') {
+          cells.eq(Math.min(80, idx+1)).focus();
+        }
+
+        if (e.key === 'ArrowLeft') {
+          cells.eq(Math.max(0, idx-1)).focus();
+        }
+
+        if (e.key === 'ArrowDown') {
+          cells.eq(Math.min(80, idx+9)).focus();
+        }
+
+        if (e.key === 'ArrowUp') {
+          cells.eq(Math.max(0, idx-9)).focus();
+        }
+
+      });
+    });
+  </script>
 </body>
 </html>
